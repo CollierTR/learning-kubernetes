@@ -27,10 +27,38 @@ spec:
           # - Init containers always run to completion.
           # - Each init container must complete successfully before the next one starts.
       containers:
-      - name: synergychat-crawler
+      - name: synergychat-crawler-1
         image: docker.io/bootdotdev/synergychat-crawler:latest
         imagePullPolicy: IfNotPresent
         envFrom:
           - configMapRef:
               name: synergychat-crawler-configmap
+        volumeMounts:
+        - name: cache-volume-1
+          mountPath: /cache
+      - name: synergychat-crawler-2
+        image: docker.io/bootdotdev/synergychat-crawler:latest
+        imagePullPolicy: IfNotPresent
+        envFrom:
+          - configMapRef:
+              name: synergychat-crawler-configmap
+        volumeMounts:
+        - name: cache-volume-2
+          mountPath: /cache
+      - name: synergychat-crawler-3
+        image: docker.io/bootdotdev/synergychat-crawler:latest
+        imagePullPolicy: IfNotPresent
+        envFrom:
+          - configMapRef:
+              name: synergychat-crawler-configmap
+        volumeMounts:
+        - name: cache-volume-3
+          mountPath: /cache
+      volumes:
+      - name: cache-volume-1
+        emptyDir: {}
+      - name: cache-volume-2
+        emptyDir: {}
+      - name: cache-volume-3
+        emptyDir: {}
       restartPolicy: Always
