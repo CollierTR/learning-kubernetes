@@ -30,6 +30,11 @@ spec:
       - name: synergychat-api
         image: docker.io/bootdotdev/synergychat-api:latest
         imagePullPolicy: IfNotPresent
+        volumeMounts:
+        - name: cache-volume-1
+          mountPath: /cache
+        - name: synergychat-api-volume
+          mountPath: /persist
         env:
         - name: API_DB_FILEPATH
           valueFrom:
@@ -41,4 +46,10 @@ spec:
             configMapKeyRef:
               name: synergychat-api-configmap
               key: API_PORT
+      volumes:
+      - name: cache-volume-1
+        emptyDir: {}
+      - name: synergychat-api-volume
+        persistentVolumeClaim:
+          claimName: synergychat-api-pvc
       restartPolicy: Always
